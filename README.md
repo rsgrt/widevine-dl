@@ -10,11 +10,9 @@ $ pip install ffmpeg yt-dlp aria2p
 ```
 
 ## Installation & Run
-1. Download and Extract ZIP from [Releases](https://github.com/WHTJEON/widevine-dl/releases)
-2. Install Requirements
-3. Run widevine-dl.py
-```
-$ python3 widevine-dl.py
+1. git clone
+2. install requirements
+3. run: py widevine-dl.py
 ```
 
 ## Inputs

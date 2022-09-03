@@ -11,9 +11,6 @@ import time
 FILE_DIRECTORY=str(pathlib.Path(__file__).parent.absolute())
 TEMPORARY_PATH = FILE_DIRECTORY+"/cache"
 OUTPUT_PATH = FILE_DIRECTORY+"/output"
-ffmpeg = "D:\\path\\ffmpeg.exe"
-ytdlp = "D:\\path\\yt-dlp.exe"
-aria2c = "D:\\path\\aria2c.exe"
 		
 def divider():
 	print ('-' * shutil.get_terminal_size().columns)
@@ -29,7 +26,7 @@ def empty_folder(folder):
 def download_drm_content(mpd_url):
 	divider()
 	print("Processing Video Info..")
-	os.system(f'{ytdlp} --external-downloader {aria2c} --no-warnings --allow-unplayable-formats --no-check-certificate -F "%s"'%mpd_url)
+	os.system(f'ytdlp --no-warnings --allow-unplayable-formats --no-check-certificate -F "%s"'%mpd_url)
 	divider()
 	VIDEO_ID = input("ENTER VIDEO_ID (Press Enter for Best): ")
 	if VIDEO_ID == "":
@@ -41,9 +38,9 @@ def download_drm_content(mpd_url):
 	
 	divider()
 	print("Downloading Encrypted Video from CDN..")	
-	os.system(f'{ytdlp} -o "{TEMPORARY_PATH}/encrypted_video.%(ext)s" --no-warnings --external-downloader {aria2c} --allow-unplayable-formats --no-check-certificate -f {VIDEO_ID} "{mpd_url}" -o "{TEMPORARY_PATH}/encrypted_video.%(ext)s"')
+	os.system(f'ytdlp -o "{TEMPORARY_PATH}/encrypted_video.%(ext)s" --no-warnings --external-downloader aria2c --allow-unplayable-formats --no-check-certificate -f {VIDEO_ID} "{mpd_url}" -o "{TEMPORARY_PATH}/encrypted_video.%(ext)s"')
 	print("Downloading Encrypted Audio from CDN..")
-	os.system(f'{ytdlp} -o "{TEMPORARY_PATH}/encrypted_audio.m4a" --no-warnings --external-downloader {aria2c} --allow-unplayable-formats --no-check-certificate -f {AUDIO_ID} "{mpd_url}"')
+	os.system(f'ytdlp -o "{TEMPORARY_PATH}/encrypted_audio.m4a" --no-warnings --external-downloader aria2c --allow-unplayable-formats --no-check-certificate -f {AUDIO_ID} "{mpd_url}"')
 
 def decrypt_content():
 	divider()
@@ -59,7 +56,7 @@ def merge_content():
 	divider()
 	print("Merging Files and Processing %s.. (Takes a while)"%FILENAME)
 	time.sleep(2)
-	os.system(f'{ffmpeg} -i %s/decrypted_video.mp4 -i %s/decrypted_audio.m4a -c:v copy -c:a copy %s/%s'%(TEMPORARY_PATH,TEMPORARY_PATH,OUTPUT_PATH,FILENAME))
+	os.system(f'ffmpeg -i %s/decrypted_video.mp4 -i %s/decrypted_audio.m4a -c:v copy -c:a copy %s/%s'%(TEMPORARY_PATH,TEMPORARY_PATH,OUTPUT_PATH,FILENAME))
 
 divider()
 print("Widevine-DL by vank0n * mod by r3n\n")
